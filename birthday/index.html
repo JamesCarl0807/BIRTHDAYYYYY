@@ -297,32 +297,49 @@
     }
 
     function showMessage(){
-      typingTimeouts.forEach(timeout => clearTimeout(timeout));
-      typingTimeouts = [];
+  typingTimeouts.forEach(timeout => clearTimeout(timeout));
+  typingTimeouts = [];
 
-      let text = "Happy Birthday, Maam Kathleen Mae Vallespin! ❤️\n\n" +
-                 "Wishing you an amazing day filled with laughter, joy, and lots of cake! 🍰\n" +
-                 "May all your dreams come true this year, and may you continue to shine bright like the wonderful person you are.\n" +
-                 "Cheers to more fun memories, smiles, and adventures ahead! 🥳💖";
+  // Message separated line by line
+  let lines = [
+    "Happy Birthday, Maam Kathleen Mae Vallespin! ❤️",
+    "Wishing you an amazing day filled with laughter, joy, and lots of cake! 🍰",
+    "May all your dreams come true this year, and may you continue to shine bright like the wonderful person you are.",
+    "Cheers to more fun memories, smiles, and adventures ahead! 🥳💖"
+  ];
 
-      const containerEl = document.querySelector(".message-container");
-      containerEl.classList.add("show");
+  const containerEl = document.querySelector(".message-container");
+  containerEl.classList.add("show");
 
-      const msgEl = document.querySelector(".message");
-      msgEl.innerHTML = "";
-      let i = 0;
-      function typing() {
-        if (i < text.length) {
-          msgEl.innerHTML += text.charAt(i);
-          i++;
-          typingTimeouts.push(setTimeout(typing, 50));
+  const msgEl = document.querySelector(".message");
+  msgEl.innerHTML = "";
+  let i = 0;
+
+  function typing(){
+    if(i < lines.length){
+      let line = lines[i];
+      let j = 0;
+
+      function typeLine(){
+        if(j < line.length){
+          msgEl.innerHTML += line.charAt(j);
+          j++;
+          typingTimeouts.push(setTimeout(typeLine, 50));
         } else {
-          startConfetti();
-          startFireworks();
+          msgEl.innerHTML += "<br><br>"; // add spacing between lines
+          i++;
+          typingTimeouts.push(setTimeout(typing, 100));
         }
       }
-      typing();
+      typeLine();
+    } else {
+      startConfetti();
+      startFireworks();
     }
+  }
+
+  typing();
+}
 
     // --- CONFETTI ---
     function startConfetti(){
